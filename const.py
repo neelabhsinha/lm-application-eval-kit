@@ -1,5 +1,5 @@
 project_root = '.'  # project root directory
-project_name = 'open-lm-evaluation-framework'  # project name
+project_name = 'lm-application-eval-kit'  # project name
 
 # ------ Execution-specific constants ------
 

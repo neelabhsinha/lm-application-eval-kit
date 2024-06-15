@@ -1,7 +1,7 @@
 from openai import OpenAI
 import os
 
-from src.prompts.adversarial_description_generation_prompt import GenerateAdversarialDescriptionPrompt
+from src.prompts.adversarial_definition_generation_prompt import GenerateAdversarialDescriptionPrompt
 
 
 class GPT:

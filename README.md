@@ -6,27 +6,44 @@
 ---
 ## Setup
 
-Clone the repository using the following command on your CLI -
+STEP 1: [REQUIRED] Clone the repository using the following command on your CLI -
     
     git clone https://github.com/neelabhsinha/open-lm-evaluation-framework.git
     cd open-lm-evaluation-framework
 
-Install the required packages using the following command -
+STEP 2: [REQUIRED] Install the required packages using the following command -
     
         pip install -r requirements.txt
 
-Add your HuggingFace API key to the environment variables as `HF_API_KEY` to download the models from the HuggingFace model hub.
+STEP 3: [REQUIRED] Add your HuggingFace API key to the environment variables (or bashrc/zshrc) as `HF_API_KEY` to download the models from the HuggingFace model hub.
 
     export HF_API_KEY='your_huggingface_api_key_here'
 
-[OPTIONAL] If you want to use GPT for generating paraphrases or adversarial task definitions, or for evaluation, add your OpenAI API key to the environment variables as `OPENAI_API_KEY`.
+If you have your API key with some other name, you can change the name in the `main.py` file.
+
+STEP 4: [OPTIONAL] If you want to use GPT for generating paraphrases or adversarial task definitions, or for evaluation, add your OpenAI API key to the environment variables (or bashrc/zshrc) as `OPENAI_API_KEY`.
 
     export OPENAI_API_KEY='your_openai_api_key_here'
 
-Download the dataset from the (https://instructions.apps.allenai.org/) website.
+If you have your API key with some other name, you can change the name in the `src/models/gpt.py` file.
+
+Additionally, go  to `const.py` and set the following constants -
+- [REQUIRED] `have_paraphrased_definitions` - set to `True` if you want to generate paraphrased definitions for the tasks.
+- [REQUIRED] `have_adversarial_definitions` - set to `True` if you want to generate adversarial definitions for the tasks.
+
+If you don't want to generate or use paraphrased definitions, or use GPT for evaluation, you can skip the above step.
+
+STEP 5: [OPTIONAL] If you want to evaluate DeepSeek-v2, add your DeepSeek API key to the environment variables (or bashrc/zshrc) as `DEEPSEEK_API_KEY`.
+
+    export DEEPSEEK_API_KEY='your_deepseek_api_key_here'
+
+If you have your API key with some other name, you can change the name in the `src/models/deepseek.py` file.
+
+
+STEP 6: [REQUIRED] Download the dataset from the (https://instructions.apps.allenai.org/) website.
 
 Go to `const.py` and set the following constants -
-- `source_dataset_dir` - path to the downloaded dataset
+- [REQUIRED] `source_dataset_dir` - path to the downloaded dataset
 - [OPTIONAL] `domains_filter`, `categories_filter`, `reasoning_filter` - add the domains, task types or reasoning types here if trying to experiment on a customized subset.
 - [OPTIONAL] `beautified_model_names` - If you want to beautify the model names in the results, add the mapping here. Note, the key should be after the first slash(/) in the HuggingFace model key. For example, for google/gemma-2b-it, the key should be gemma-2b-it.
 
@@ -36,10 +53,34 @@ main.py is the entry point of the code.
 
 For evaluating an LM, make a decision on the following parameters -
 - LM name - get the name of the LM as per the HuggingFace model key (for example, google/gemma-2b-it for Gemma-2B-Instruction tuned)
-- instances per task - number of instances to evaluate per task definition
+- instance per task - number of instances to evaluate per task definition
 - batch size - number of instances to evaluate in a batch
 - prompt style - prompt style to use for evaluation (definition and examples)
 - Sampling techniques (if needed)
+
+### Execution Flow -
+General steps to follow are -
+1. Run evaluation for a model. The predictions will be stored in the `results` directory. Two files - `predictions.csv` having predictions and metrics for each task instance, and `results_statistics.csv` describing the statistics related to the prediction.
+2. Compute metrics for the results. The same two files as above will be updated with all supported metrics.
+3. Collect results - Generate all statistics summary and visualizations. Radar charts and line graphs like the paper will be generated for elements in the filter elements (Check Step 6 above) using the model name specified in `beautified_model_names` if present, or the default HuggingFace name.
+
+#### Example Command to analyze a particular split of the dataset -
+    
+        python main.py --task analyze_dataset --split test --instance_per_task 100
+
+#### Example Command to evaluate an LM -
+    
+        python main.py --task eval --model_name google/gemma-2b-it --instance_per_task 100 --batch_size 4 --add_definition --icl_examples 4 --do_sample --top_k 10
+
+Options can be changed based on the need. Refer to the detailed command-line options below.
+
+#### Example Command to compute metrics for a particular model -
+        
+            python main.py --task compute_metrics --metric bert_score_recall --model_name google/gemma-2b-it
+
+#### Example Command to collect visualizations and results for a particular model -
+        
+            python main.py --task collect_results --metric bert_score_recall
 
 ### Detailed Command-Line Options and Project Structure
 
@@ -67,9 +108,11 @@ The `main.py` script supports various command-line options to configure the exec
 
 - `--add_explanation`: Includes explanations along with in-context learning examples to give additional context that may aid the model in generating more accurate responses.
 
+To use the `--add_paraphrased_definition` or `--add_adversarial_definition` options, you should need Step 4 to be completed. The definitions will be generated using GPT-3.5-Turbo and only the first time. They will be added to `metadata/` directory to future use.
+
 Note, only one of the `--add_definition`, `--add_paraphrased_definition`, and `--add_adversarial_definition` options can be used at a time.
 
-#### Sampling Configuration
+#### Sampling Configuration (default is do_sample=False which does greedy decoding)
 
 - `--do_sample`: Activates sampling mode during model output generation. This option introduces variability in the outputs by not always choosing the most likely next token.
 
@@ -79,7 +122,7 @@ Note, only one of the `--add_definition`, `--add_paraphrased_definition`, and `-
 
 #### Filtering and Selection Options
 
-Use these options to filter and execute a task only on a small subset of entities from each aspect during the evaluation and analysis processes. The filter has to be assigned in `const.py`
+Use these options to filter and execute a task only on a small subset of entities from each aspect during the evaluation and analysis processes. The filter has to be assigned in `const.py`. You can leave these empty to run on the entire dataset.
 
 - `--filter_domains`: Applies a domain-specific filter during result aggregation, using predefined lists. This allows focusing the analysis on specific areas of interest.
 
@@ -112,23 +155,40 @@ The project structure is organized into several directories and files that help 
 - `README.md`: Provides an overview of the project, setup instructions, and usage guidelines.
 
 The `src` directory contains the following subdirectories:
-- `dataset_analysis/su`
+- `dataset_analysis/super_natural_instructions_analyzer.py`: Analyzes the dataset and generates statistics and visualizations.
+- `handler/exit_handler.py`: Handles the exit of the program.
+- `loader/super_natural_instructions.py`: Perform dataset operations - load a task instance, paraphrased/adversarial definitions, etc.
+- `loader/super_natural_instructions_loader.py`: Acts like a data loader, filtering the data, collecting it using previous file and batching
+- `metrics` - Contains the metric computation scripts. Supported metrics for now are `BERTScore`, `bleu`, `rouge`, and `meteor`.
+- `models` - Contains the model evaluation scripts. Supported models for now are `GPT`, `DeepSeek`, and all `HuggingFace` models.
+- `prompts/super_natural_instructions_prompt.py` - Takes the dataset and generates prompt as per the provided prompt style.
+- `prompts/adversarial_definition_prompt.py` - Generates prompt for getting adversarial task definitions for the tasks.
+- `utils/analyze_overall_performances.py` - Generates CSVs and visualizations for the executions in `results` directory.
+- `utils/compute_metrics.py` - Computes all metrics (or any specific one if needed) for the results. Updates the original `results` files with the computed metrics.
+- `utils/gpu_stats.py` - Provides GPU stats for the system.
+- `utils/radar_chart_generator.py` - Generates radar charts for the results.
+- `utils/results_io_util.py` - Some read/write utilities for results.
 
-#### Example Command to analyze a particular split of the dataset -
-    
-        python main.py --task analyze_dataset --split test
+## Our Results
 
-#### Example Command to evaluate an LM -
-    
-        python main.py --task eval --model_name google/gemma-2b-it --instances_per_task 100 --batch_size 4 --add_definition --icl_examples 4 --do_sample --top_k 10
+Overall Performance of LMs on different metrics are given below -
 
-#### Example Command to compute metrics for a particular model -
-        
-            python main.py --task compute_metrics --metric bert_score_recall --model_name google/gemma-2b-it
+| Model            | BLEU  | ROUGE-1    | ROUGE-2   | ROUGE-L    | METEOR    | BERT Score Precision | BERT Score Recall | BERT Score F1 | Best Instruction                |
+|------------------|-------|------------|-----------|------------|-----------|----------------------|-------------------|---------------|---------------------------------|
+| Gemma-2B         | 6.382 | 22.036     | 7.883     | 21.235     | 18.120    | 78.218               | 86.410            | 81.881        | 4 examples with definition      |
+| Mistral-7B       | 0.290 | 1.174      | 0.542     | 1.085      | 1.993     | 49.248               | 58.408            | 53.395        | 8 examples with definition      |
+| Gemma-7B         | 4.422 | 18.175     | 5.887     | 17.493     | 16.137    | 71.858               | 81.055            | 75.942        | 0 examples with definition      |
+| Llama-3-8B       | 3.706 | 16.379     | 5.348     | 15.302     | 14.957    | 75.520               | 82.727            | 78.804        | 0 examples with definition      |
+| Falcon-2-11B     | 4.285 | 16.885     | 6.461     | 16.013     | 16.450    | 79.652               | 86.184            | 82.718        | 8 examples with definition      |
+| Gemma-2B-I       | 5.756 | 27.564     | 8.084     | 26.236     | 20.620    | 84.555               | 88.058            | 86.189        | 2 examples with definition      |
+| Phi-3-mini-128k-I| 1.279 | 7.169      | 3.173     | 6.265      | 8.046     | 55.470               | 60.282            | 57.720        | 0 examples without definition   |
+| Mistral-7B-I     | 14.069| 51.957     | 14.665    | 50.119     | 35.551    | 91.289               | 93.755            | 92.394        | 8 examples with definition      |
+| Gemma-7B-I       | 0.972 | 8.642      | 3.229     | 7.964      | 12.568    | 78.184               | 85.142            | 81.483        | 0 examples with definition      |
+| Llama-3-8B-I     | 0.953 | 4.682      | 2.191     | 4.233      | 8.312     | 74.231               | 84.332            | 78.888        | 8 examples without definition   |
 
-#### Example Command to collect visualizations and results for a particular model -
-        
-            python main.py --task collect_results --metric bert_score_recall
+
+Radar charts for pre-trained and IT models are given below -
+
 
 ## Citation
 

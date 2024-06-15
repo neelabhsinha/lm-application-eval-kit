@@ -5,8 +5,8 @@ project_name = 'open-lm-evaluation-framework'  # project name
 
 # Dataset location (change the directory path here to the dataset)
 source_dataset_dir = '/nethome/nsinha68/flash/datasets/super-natural-instructions/source_data'
-have_paraphrased_definitions = True  # whether to include paraphrased definitions during data loading
-have_adversarial_definitions = True  # whether to include adversarial definitions during data loading
+have_paraphrased_definitions = False  # whether to include paraphrased definitions during data loading
+have_adversarial_definitions = False  # whether to include adversarial definitions during data loading
 
 # ------ End of execution-specific constants ------
 

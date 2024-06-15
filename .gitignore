@@ -25,7 +25,7 @@ saved_models/
 wandb/
 
 /results/
-aggregated_results/
+aggregated_results
 metadata/
 scripts/
 ```

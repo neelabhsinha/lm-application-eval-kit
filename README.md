@@ -6,10 +6,7 @@
 ---
 ## Setup
 
-STEP 1: [REQUIRED] Clone the repository using the following command on your CLI -
-    
-    git clone https://github.com/neelabhsinha/lm-application-eval-kit.git
-    cd lm-application-eval-kit
+STEP 1: [REQUIRED] Clone the repository using the following command on your CLI.
 
 STEP 2: [REQUIRED] Install the required packages using the following command -
     

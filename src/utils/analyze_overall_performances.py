@@ -326,6 +326,8 @@ class ModelPerformanceAnalysisUtil:
     def get_results(self, models):
         if models is not None:
             self.models = models
+        print('Collecting results for these models -', self.models)
+        print('Extracting overall performances over all models')
         print('Extracting overall performances over all models')
         self._extract_model_level_performance_for_all_metrics()
         self._extract_overall_model_level_performance()

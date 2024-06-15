@@ -6,22 +6,25 @@
 ---
 ## Setup
 
-STEP 1: [REQUIRED] Clone the repository using the following command on your CLI.
+STEP 1: [REQUIRED] Clone the repository.
 
 STEP 2: [REQUIRED] Install the required packages using the following command -
-    
-        pip install -r requirements.txt
 
+```commandline
+pip install -r requirements.txt
+```
 STEP 3: [REQUIRED] Add your HuggingFace API key to the environment variables (or bashrc/zshrc) as `HF_API_KEY` to download the models from the HuggingFace model hub.
 
-    export HF_API_KEY='your_huggingface_api_key_here'
-
+```
+export HF_API_KEY='your_huggingface_api_key_here'
+```
 If you have your API key with some other name, you can change the name in the `main.py` file.
 
 STEP 4: [OPTIONAL] If you want to use GPT for generating paraphrases or adversarial task definitions, or for evaluation, add your OpenAI API key to the environment variables (or bashrc/zshrc) as `OPENAI_API_KEY`.
 
-    export OPENAI_API_KEY='your_openai_api_key_here'
-
+```
+ export OPENAI_API_KEY='your_openai_api_key_here'
+```
 If you have your API key with some other name, you can change the name in the `src/models/gpt.py` file.
 
 Additionally, go  to `const.py` and set the following constants -
@@ -32,10 +35,10 @@ If you don't want to generate or use paraphrased definitions, or use GPT for eva
 
 STEP 5: [OPTIONAL] If you want to evaluate DeepSeek-v2, add your DeepSeek API key to the environment variables (or bashrc/zshrc) as `DEEPSEEK_API_KEY`.
 
-    export DEEPSEEK_API_KEY='your_deepseek_api_key_here'
-
+```
+export DEEPSEEK_API_KEY='your_deepseek_api_key_here'
+```
 If you have your API key with some other name, you can change the name in the `src/models/deepseek.py` file.
-
 
 STEP 6: [REQUIRED] Download the dataset from the (https://instructions.apps.allenai.org/) website.
 
@@ -69,39 +72,46 @@ Note -
 - You can also change filters. We also support collecting results on a different metric. Refer to the command-line options below.
 
 #### Example Command to analyze a particular split of the dataset -
-    
-        python main.py --task analyze_dataset --split test --instance_per_task 100
-
+```commandline
+python main.py --task analyze_dataset --split test --instance_per_task 100
+```
 #### Example Command to evaluate an LM -
-    
-        python main.py --task eval --model_name google/gemma-2b-it --instance_per_task 100 --batch_size 4 --add_definition --icl_examples 4 --do_sample --top_k 10
-
+ 
+```commandline
+python main.py --task eval --model_name google/gemma-2b-it --instance_per_task 100 --batch_size 4 --add_definition --icl_examples 4 --do_sample --top_k 10
+```
 Options can be changed based on the need. Adjust batch size based on your available GPU memory. Always specify the model name as per the HuggingFace model key. More on sampling techniques and prompt styles can be found in the detailed command-line options guide below.
 
 #### Example Command to compute metrics for a particular model -
         
-            python main.py --task compute_metrics --metric bert_score_recall --force_recompute
-
+```commandline
+python main.py --task compute_metrics --metric bert_score_recall --force_recompute
+```
 Force recompute is optional. Setting it to true will recompute the metrics even if they are already computed. If it's false, available ones will be skipped.
 Supported metrics can be found in the detailed command-line options guide below.
 
 #### Example Command to collect visualizations and results for a particular model -
-        
-            python main.py --task collect_results --metric bert_score_recall
 
+```commandline
+python main.py --task collect_results --metric bert_score_recall
+```
 If no `model_name` is specified, all models in the `results` directory will be considered. If you want to consider only a subset of models, you can specify the models in the `--model_name` parameter by space separating the model names (use the `beautified_model_name` values here, not HuggingFace default).
 
 For example, if the models are not added to `beautified_model_names` in `const.py`, you can use the HuggingFace model name after the first slash(/) as `model_name`.
-    
-                python main.py --task collect_results --metric bert_score_recall --model_name gemma-2b-it falcon-2-11b
-
+```commandline
+python main.py --task collect_results --metric bert_score_recall --model_name google/gemma-2b-it google/falcon-2-11b
+```
 If they are added, you can use the beautified model names as -
 
-                python main.py --task collect_results --metric bert_score_recall --model_name Gemma-2B Falcon-2-11B
-
+```commandline
+python main.py --task collect_results --metric bert_score_recall --model_name Gemma-2B Falcon-2-11B
+```
 Use a different metric if needed. See example below -
-    
-                    python main.py --task collect_results --metric bleu --model_name Gemma-2B Falcon-2-11B
+
+```commandline
+python main.py --task collect_results --metric bleu --model_name Gemma-2B Falcon-2-11B
+```    
+                    
 
 ### Detailed Command-Line Options and Project Structure
 

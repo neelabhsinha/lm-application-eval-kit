@@ -228,7 +228,7 @@ Overall Performance of LMs on different metrics are given below -
 
 ## Citation
 
-If you use this codebase or the dataset in your research, please cite our paper.
+If you use this codebase or our analysis in your research, please cite our paper.
 
 
 

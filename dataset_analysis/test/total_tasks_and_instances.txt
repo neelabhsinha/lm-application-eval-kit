@@ -1,0 +1,6 @@
+Total Tasks: 119
+Minimum Instance in a Task: 26
+Total Instances: 387275
+Total Instances after clipping: 11810
+Average Instances per Task: 3254.4117647058824
+Average Instances per Task after clipping: 99.24369747899159

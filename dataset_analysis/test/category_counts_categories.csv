@@ -1,0 +1,15 @@
+,categories,number_of_tasks,total_instances
+0,Answerability Classification,13.0,1300.0
+1,Cause Effect Classification,7.0,700.0
+2,Coreference Resolution,14.0,1400.0
+3,Data to Text,9.0,826.0
+4,Dialogue Act Recognition,7.0,700.0
+5,Grammar Error Correction,1.0,100.0
+6,Keyword Tagging,5.0,500.0
+7,Overlap Extraction,2.0,200.0
+8,Question Rewriting,11.0,1100.0
+9,Textual Entailment,24.0,2400.0
+10,Title Generation,18.0,1784.0
+11,Word Analogy,8.0,800.0
+12,Total,119.0,11810.0
+13,Average,9.916666666666666,984.1666666666666

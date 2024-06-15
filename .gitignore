@@ -1,0 +1,31 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caches and logs
+.cache/
+logs/
+*.log
+
+# Development environments
+.idea/
+.vscode/
+.DS_Store
+
+# Virtual environment
+venv/
+.venv/
+env/
+.env/
+
+# Local files to be ignored
+cache/
+saved_models/
+wandb/
+
+/results/
+aggregated_results/
+metadata/
+scripts/
+```

@@ -1,0 +1,21 @@
+,reasoning,number_of_tasks,total_instances
+0,,52.0,5184.0
+1,Abductive Reasoning,2.0,200.0
+2,Analogical Reasoning,9.0,900.0
+3,Causal Reasoning,8.0,800.0
+4,Commonsense Reasoning,30.0,3000.0
+5,Cross-document Reasoning,2.0,200.0
+6,Deductive Reasoning,2.0,200.0
+7,Discrete Reasoning,2.0,200.0
+8,Logical Reasoning,1.0,100.0
+9,Multihop Reasoning,3.0,226.0
+10,Numerical Reasoning,2.0,200.0
+11,Quantitative Reasoning,3.0,300.0
+12,Reasoning on Actions,3.0,300.0
+13,Reasoning on Objects,1.0,100.0
+14,Reasoning on Social Interactions,7.0,700.0
+15,Relational Reasoning,11.0,1100.0
+16,Temporal Reasoning,3.0,300.0
+17,Textual Entailment,24.0,2400.0
+18,Total,165.0,16410.0
+19,Average,9.166666666666666,911.6666666666666

@@ -59,10 +59,14 @@ For evaluating an LM, make a decision on the following parameters -
 - Sampling techniques (if needed)
 
 ### Execution Flow -
+
 General steps to follow are -
 1. Run evaluation for a model. The predictions will be stored in the `results` directory. Two files - `predictions.csv` having predictions and metrics for each task instance, and `results_statistics.csv` describing the statistics related to the prediction.
 2. Compute metrics for the results. The same two files as above will be updated with all supported metrics.
 3. Collect results - Generate all statistics summary and visualizations. Radar charts and line graphs like the paper will be generated for elements in the filter elements (Check Step 6 above) using the model name specified in `beautified_model_names` if present, or the default HuggingFace name.
+
+For result collection, by default, all models in `results` directory will be considered. If you want to consider only a subset of models, you can specify the models in the `--model_name` parameter by space separating the model names (use the `beautified_model_name` values here, not HuggingFace default).
+You can also change filters, or collect results on a different metric. Refer to the command-line options below.
 
 #### Example Command to analyze a particular split of the dataset -
     
@@ -95,6 +99,8 @@ The `main.py` script supports various command-line options to configure the exec
 - `--model_name MODEL1 MODEL2 ...`: Specifies one or more model names to be used for the evaluation. Models should be provided as a space-separated list. This allows flexibility in testing multiple models in a single run.
 
 - `--split {train,test}`: Determines the data split to use during tasks. Options are `train` for training data and `test` for test data, with `test` being the default.
+
+For evaluations, model_name will take HuggingFace model keys. For collecting results, model_name will take the keys specified in `beautified_model_names` in `const.py`, or the HuggingFace model name after the first slash(/).
 
 #### Prompt Style Options
 
@@ -186,9 +192,7 @@ Overall Performance of LMs on different metrics are given below -
 | Gemma-7B-I       | 0.972 | 8.642      | 3.229     | 7.964      | 12.568    | 78.184               | 85.142            | 81.483        | 0 examples with definition      |
 | Llama-3-8B-I     | 0.953 | 4.682      | 2.191     | 4.233      | 8.312     | 74.231               | 84.332            | 78.888        | 8 examples without definition   |
 
-
-Radar charts for pre-trained and IT models are given below -
-
+**NOTE - You can refer all visualizations and tables of the paper in the `paper_results` directory.**
 
 ## Citation
 

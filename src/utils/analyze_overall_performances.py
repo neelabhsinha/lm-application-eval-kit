@@ -93,7 +93,7 @@ class ModelPerformanceAnalysisUtil:
                   metric_values['bert_score_recall']):
                 final_results[result_metadata['model_name']] = metric_values
         final_results = final_results.T
-        self._save_dataframe(final_results, os.path.join(aggregated_results_dir, 'experiment_1-1',
+        self._save_dataframe(final_results, os.path.join(aggregated_results_dir, 'results_on_all_metrics',
                                                          'comparison_across_all_metrics.csv'))
 
     def _extract_overall_model_level_performance(self):
@@ -113,8 +113,8 @@ class ModelPerformanceAnalysisUtil:
         pivot_df = results_df.pivot(index='model_name', columns='metadata', values='value')
         sorted_columns = sorted(pivot_df.columns, key=sort_key)
         pivot_df = pivot_df[sorted_columns]
-        self._save_dataframe(pivot_df, os.path.join(aggregated_results_dir, self.metric, 'experiment_1-2',
-                                                    'overall_comparison_of_models_by_instruction_format.csv'))
+        self._save_dataframe(pivot_df, os.path.join(aggregated_results_dir, self.metric, 'prompt_style_results_overall',
+                                                    'overall_comparison_of_models_by_prompt_style.csv'))
 
     def _group_all_model_results_along_prompt(self):
         all_results = pd.DataFrame()
@@ -132,11 +132,11 @@ class ModelPerformanceAnalysisUtil:
         self._find_correlation_across_different_models(all_results)
         if self.write_all_aspect_level_results:
             self._save_dataframe(all_results, os.path.join(aggregated_results_dir, self.metric,
-                                                           'experiment_1-2',
+                                                           'prompt_style_results_overall',
                                                            'result_by_prompt.csv'))
 
     def _find_correlation_across_different_models(self, all_results):
-        path = os.path.join(aggregated_results_dir, self.metric, 'experiment_1-3')
+        path = os.path.join(aggregated_results_dir, self.metric, 'lm_performance_correlation')
         corr = all_results.corr()
         self._save_correlation_matrix(corr, os.path.join(path, 'generation_correlation_across_models_by_prompt.pdf'))
 
@@ -206,7 +206,8 @@ class ModelPerformanceAnalysisUtil:
         merged_df = merged_df[sorted_columns]
         merged_df['max_value'] = merged_df[numeric_cols].max(axis=1)
         merged_df.loc[:, 'best_instruction'] = merged_df[numeric_cols].idxmax(axis=1)
-        self._save_dataframe(merged_df, os.path.join(aggregated_results_dir, self.metric, 'experiment_4',
+        self._save_dataframe(merged_df, os.path.join(aggregated_results_dir, self.metric,
+                                                     'aspect_prompt_style_variation',
                                                      model_name, aspect, 'all_results_with_best_instruction.csv'))
         merged_df = merged_df.rename(columns={'max_value': model_name})
         return merged_df[[aspect, model_name]]
@@ -238,10 +239,10 @@ class ModelPerformanceAnalysisUtil:
         f = domains_filter if aspect == 'domains' else (categories_filter if aspect == 'categories'
                                                         else reasoning_filter)
         radar_chart_plotter = RadarChartPlotter()
-        self._save_dataframe(df, os.path.join(aggregated_results_dir, self.metric, 'experiment_2-1',
+        self._save_dataframe(df, os.path.join(aggregated_results_dir, self.metric, 'aspect_level_lm_analysis',
                                               f'comparison_across_{aspect}', 'results.csv'))
         radar_chart_plotter.plot_radar_chart(df, f, df.columns, os.path.join(aggregated_results_dir, self.metric,
-                                                                             'experiment_2-1',
+                                                                             'aspect_level_lm_analysis',
                                                                              f'comparison_across_{aspect}',
                                                                              'radar_chart.pdf'))
 
@@ -254,8 +255,8 @@ class ModelPerformanceAnalysisUtil:
             available_columns = [col for col in columns_to_select if col in df.columns]
             if available_columns:
                 df = df[available_columns]
-                folder_path = os.path.join(aggregated_results_dir, self.metric, 'experiment_4', model_name,
-                                           aspect, file)
+                folder_path = os.path.join(aggregated_results_dir, self.metric, 'aspect_prompt_style_variation',
+                                           model_name, aspect, file)
                 visualization_path = os.path.join(folder_path)
                 all_columns_present = set(columns_to_select).issubset(df.columns)
                 if all_columns_present:
@@ -266,7 +267,6 @@ class ModelPerformanceAnalysisUtil:
     def _save_line_graph(self, df, file_path, max, min, aspect):
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         plt.rcParams.update({'font.size': 22})
-        plt.rcParams['font.family'] = 'Helvetica'
         color_cycle = plt.cm.tab20.colors
         fig, ax = plt.subplots(figsize=(16, 8))
         ax.set_facecolor('#e5ecf6')

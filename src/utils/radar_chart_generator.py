@@ -89,7 +89,7 @@ class RadarChartPlotter:
             margin=dict(l=0, r=0)
         )
         fig1 = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16])
-        fig1.write_image(file_path, width=1500, height=1200, scale=2)
+        fig1.write_image(file_path, width=2000, height=1500, scale=2)
         time.sleep(3)
-        fig.write_image(file_path, width=1500, height=1200, scale=2)
+        fig.write_image(file_path, width=2000, height=1500, scale=2)
         # purposely saving the figure twice to avoid MathJax watermark bug

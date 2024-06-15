@@ -18,6 +18,9 @@ aggregated_results_dir = f'{project_root}/aggregated_results' # directory to sto
 dataset_analysis_dir = f'{project_root}/dataset_analysis' # directory to store dataset analysis results
 
 tasks = ['train', 'eval', 'analyze_dataset', 'collect_results', 'compute_metrics', 'analyze_dataset']
+supported_metrics = ["bleu", "rouge1", "rouge2", "rougeL", "meteor", "bert_score_recall", "bert_score_f1",
+                     "bert_score_precision"]
+
 # tasks to perform
 
 # More readable Model Names (for results)

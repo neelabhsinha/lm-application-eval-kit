@@ -1,7 +1,7 @@
 import argparse
 import os
 
-from const import tasks
+from const import tasks, supported_metrics
 from src.utils.eval import evaluate
 from src.utils.analyze_overall_performances import ModelPerformanceAnalysisUtil
 from src.dataset_analysis.super_natural_instructions_analyzer import SuperNaturalInstructionsAnalyzer
@@ -75,7 +75,7 @@ def get_args():
                              ' according to predefined lists.')
 
     # Evaluation configuration
-    parser.add_argument('--metric', default='bert_score_recall', type=str,
+    parser.add_argument('--metric', default='bert_score_recall', type=str, choices=supported_metrics,
                         help='Specify the evaluation metric to use. Default is "rougeL". Options might include'
                              ' various NLP-specific metrics like BLEU, METEOR, etc., depending on what is implemented.')
 

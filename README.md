@@ -65,11 +65,11 @@ General steps to follow are -
 2. Compute metrics for the results. The same two files as above will be updated with specified supported metric for all the files in `results` directory.
 3. Collect results - Generate all statistics summary and visualizations. Radar charts and line graphs like the paper will be generated for elements in the filter elements (Check Step 6 above) using the model name specified in `beautified_model_names` if present.
 
-The first time you run the code, a dataset metadata will be created and stored in `metadata/` directory. So, first execution will take time. But next time onwards, the existing metadata will be read, unless deleted.
-
-For result collection, by default, all models in `results` directory will be considered. If you want to consider only a subset of models, you can specify the models in the `--model_name` parameter by space separating the model names (use the `beautified_model_name` values here, not HuggingFace default).
-
-You can also change filters. We also support collecting results on a different metric. Refer to the command-line options below.
+Note -
+- The Radar chart results will always be generated for the best prompt style for that entity
+- The first time you run the code, a dataset metadata will be created and stored in `metadata/` directory. So, first execution will take time. But next time onwards, the existing metadata will be read, unless deleted.
+- For result collection, by default, all models in `results` directory will be considered. If you want to consider only a subset of models, you can specify the models in the `--model_name` parameter by space separating the model names (use the `beautified_model_name` values here, not HuggingFace default).
+- You can also change filters. We also support collecting results on a different metric. Refer to the command-line options below.
 
 #### Example Command to analyze a particular split of the dataset -
     
@@ -79,13 +79,13 @@ You can also change filters. We also support collecting results on a different m
     
         python main.py --task eval --model_name google/gemma-2b-it --instance_per_task 100 --batch_size 4 --add_definition --icl_examples 4 --do_sample --top_k 10
 
-Options can be changed based on the need. Always specify the model name as per the HuggingFace model key. More on sampling techniques and prompt styles can be found in the detailed command-line options guide below.
+Options can be changed based on the need. Adjust batch size based on your available GPU memory. Always specify the model name as per the HuggingFace model key. More on sampling techniques and prompt styles can be found in the detailed command-line options guide below.
 
 #### Example Command to compute metrics for a particular model -
         
             python main.py --task compute_metrics --metric bert_score_recall --force_recompute
 
-Force recompute true will recompute the metrics even if they are already computed. If it's false, available ones will be skipped.
+Force recompute is optional. Setting it to true will recompute the metrics even if they are already computed. If it's false, available ones will be skipped.
 Supported metrics can be found in the detailed command-line options guide below.
 
 #### Example Command to collect visualizations and results for a particular model -

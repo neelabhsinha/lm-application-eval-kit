@@ -61,12 +61,13 @@ For evaluating an LM, make a decision on the following parameters -
 ### Execution Flow -
 
 General steps to follow are -
-1. Run evaluation for a model. The predictions will be stored in the `results` directory. Two files - `predictions.csv` having predictions and metrics for each task instance, and `results_statistics.csv` describing the statistics related to the prediction.
-2. Compute metrics for the results. The same two files as above will be updated with all supported metrics.
-3. Collect results - Generate all statistics summary and visualizations. Radar charts and line graphs like the paper will be generated for elements in the filter elements (Check Step 6 above) using the model name specified in `beautified_model_names` if present, or the default HuggingFace name.
+1. Run evaluation for models. The predictions will be stored in the `results` directory. Two files - `predictions.csv` having predictions and metrics for each task instance, and `results_statistics.csv` describing the statistics related to the prediction.
+2. Compute metrics for the results. The same two files as above will be updated with specified supported metric for all the files in `results` directory.
+3. Collect results - Generate all statistics summary and visualizations. Radar charts and line graphs like the paper will be generated for elements in the filter elements (Check Step 6 above) using the model name specified in `beautified_model_names` if present.
 
 For result collection, by default, all models in `results` directory will be considered. If you want to consider only a subset of models, you can specify the models in the `--model_name` parameter by space separating the model names (use the `beautified_model_name` values here, not HuggingFace default).
-You can also change filters, or collect results on a different metric. Refer to the command-line options below.
+
+You can also change filters. We also support collecting results on a different metric. Refer to the command-line options below.
 
 #### Example Command to analyze a particular split of the dataset -
     
@@ -77,14 +78,33 @@ You can also change filters, or collect results on a different metric. Refer to 
         python main.py --task eval --model_name google/gemma-2b-it --instance_per_task 100 --batch_size 4 --add_definition --icl_examples 4 --do_sample --top_k 10
 
 Options can be changed based on the need. Refer to the detailed command-line options below.
+Always specify the model name as per the HuggingFace model key.
+More on sampling techniques and prompt styles can be found in the detailed command-line options guide below.
 
 #### Example Command to compute metrics for a particular model -
         
-            python main.py --task compute_metrics --metric bert_score_recall --model_name google/gemma-2b-it
+            python main.py --task compute_metrics --metric bert_score_recall --force_recompute
+
+Force recompute true will recompute the metrics even if they are already computed. If it's fall, available ones will be skipped.
+Supported metrics can be found in the detailed command-line options guide below.
 
 #### Example Command to collect visualizations and results for a particular model -
         
             python main.py --task collect_results --metric bert_score_recall
+
+If no model_name is specified, all models in the `results` directory will be considered. If you want to consider only a subset of models, you can specify the models in the `--model_name` parameter by space separating the model names (use the `beautified_model_name` values here, not HuggingFace default).
+
+For example, if the models are not added to `beautified_model_names` in `const.py`, you can use the HuggingFace model name after the first slash(/) in the model name.
+    
+                python main.py --task collect_results --metric bert_score_recall --model_name gemma-2b-it falcon-2-11b
+
+If they are added, you can use the beautified model names as -
+
+                python main.py --task collect_results --metric bert_score_recall --model_name Gemma-2B Falcon-2-11B
+
+Use a different metric if needed. See example below -
+    
+                    python main.py --task collect_results --metric bleu --model_name Gemma-2B Falcon-2-11B
 
 ### Detailed Command-Line Options and Project Structure
 
@@ -101,6 +121,8 @@ The `main.py` script supports various command-line options to configure the exec
 - `--split {train,test}`: Determines the data split to use during tasks. Options are `train` for training data and `test` for test data, with `test` being the default.
 
 For evaluations, model_name will take HuggingFace model keys. For collecting results, model_name will take the keys specified in `beautified_model_names` in `const.py`, or the HuggingFace model name after the first slash(/).
+
+Split is only used for data analysis.
 
 #### Prompt Style Options
 
@@ -138,7 +160,7 @@ Use these options to filter and execute a task only on a small subset of entitie
 
 #### Evaluation and Metrics Configuration
 
-- `--metric STRING`: Specifies the metric to use for evaluation. Default is `bert_score_recall`, but other metrics like BLEU, ROUGE, and METEOR can also be specified depending on the implementation.
+- `--metric STRING`: Specifies the metric to use for evaluation. Default is `bert_score_recall`, but other metrics are also supported and include `bleu`, `rouge1`, `rouge2`, `rougeL`, `meteor`, `bert_score_f1`, `bert_score_precision`.
 
 - `--force_recompute`: Forces the re-computation of metrics, even if they have been previously calculated. This is useful when changes to the evaluation protocol or model configurations need to be reflected in new results.
 

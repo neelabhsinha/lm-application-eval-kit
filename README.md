@@ -143,7 +143,7 @@ Split is only used for data analysis.
 
 - `--add_explanation`: Includes explanations along with in-context learning examples to give additional context that may aid the model in generating more accurate responses.
 
-To use the `--add_paraphrased_definition` or `--add_adversarial_definition` options, you should need Step 4 of Setup to be completed. The definitions will be generated using GPT-3.5-Turbo and only the first time. They will be added to `metadata/` directory to future use.
+To use the `--add_paraphrased_definition` or `--add_adversarial_definition` options, you should need Step 4 of Setup to be completed. The definitions will be generated using GPT-3.5-Turbo and only the first time. They will be added to `metadata/` directory to future use. Also, the flags of Step 4 needs to be `true` for evaluations if using adversarial or paraphrased definitions. Otherwise, it will just append a blank string to the task definition.
 
 Note, only one of the `--add_definition`, `--add_paraphrased_definition`, and `--add_adversarial_definition` options can be used at a time.
 

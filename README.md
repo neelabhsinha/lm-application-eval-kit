@@ -65,6 +65,8 @@ General steps to follow are -
 2. Compute metrics for the results. The same two files as above will be updated with specified supported metric for all the files in `results` directory.
 3. Collect results - Generate all statistics summary and visualizations. Radar charts and line graphs like the paper will be generated for elements in the filter elements (Check Step 6 above) using the model name specified in `beautified_model_names` if present.
 
+The first time you run the code, a dataset metadata will be created and stored in `metadata/` directory. So, first execution will take time. But next time onwards, the existing metadata will be read, unless deleted.
+
 For result collection, by default, all models in `results` directory will be considered. If you want to consider only a subset of models, you can specify the models in the `--model_name` parameter by space separating the model names (use the `beautified_model_name` values here, not HuggingFace default).
 
 You can also change filters. We also support collecting results on a different metric. Refer to the command-line options below.
@@ -77,24 +79,22 @@ You can also change filters. We also support collecting results on a different m
     
         python main.py --task eval --model_name google/gemma-2b-it --instance_per_task 100 --batch_size 4 --add_definition --icl_examples 4 --do_sample --top_k 10
 
-Options can be changed based on the need. Refer to the detailed command-line options below.
-Always specify the model name as per the HuggingFace model key.
-More on sampling techniques and prompt styles can be found in the detailed command-line options guide below.
+Options can be changed based on the need. Always specify the model name as per the HuggingFace model key. More on sampling techniques and prompt styles can be found in the detailed command-line options guide below.
 
 #### Example Command to compute metrics for a particular model -
         
             python main.py --task compute_metrics --metric bert_score_recall --force_recompute
 
-Force recompute true will recompute the metrics even if they are already computed. If it's fall, available ones will be skipped.
+Force recompute true will recompute the metrics even if they are already computed. If it's false, available ones will be skipped.
 Supported metrics can be found in the detailed command-line options guide below.
 
 #### Example Command to collect visualizations and results for a particular model -
         
             python main.py --task collect_results --metric bert_score_recall
 
-If no model_name is specified, all models in the `results` directory will be considered. If you want to consider only a subset of models, you can specify the models in the `--model_name` parameter by space separating the model names (use the `beautified_model_name` values here, not HuggingFace default).
+If no `model_name` is specified, all models in the `results` directory will be considered. If you want to consider only a subset of models, you can specify the models in the `--model_name` parameter by space separating the model names (use the `beautified_model_name` values here, not HuggingFace default).
 
-For example, if the models are not added to `beautified_model_names` in `const.py`, you can use the HuggingFace model name after the first slash(/) in the model name.
+For example, if the models are not added to `beautified_model_names` in `const.py`, you can use the HuggingFace model name after the first slash(/) as `model_name`.
     
                 python main.py --task collect_results --metric bert_score_recall --model_name gemma-2b-it falcon-2-11b
 
@@ -116,7 +116,7 @@ The `main.py` script supports various command-line options to configure the exec
 
 - `--task STRING`: Selects the task to perform. Available options include `eval` for model evaluations, `analyze_dataset` for dataset analysis, `compute_metrics` for metrics computation, and `collect_results` for aggregating and analyzing results. Each task triggers different components of the script.
 
-- `--model_name MODEL1 MODEL2 ...`: Specifies one or more model names to be used for the evaluation. Models should be provided as a space-separated list. This allows flexibility in testing multiple models in a single run.
+- `--model_name MODEL1 MODEL2 ...`: Specifies one or more model names to be used for the evaluation. Models should be provided as a space-separated list. This allows flexibility in testing multiple models in a single run. When evaluating, always pass a single model name. If multiple is passed, first one will be considered. Multiple options is only for collecting results.
 
 - `--split {train,test}`: Determines the data split to use during tasks. Options are `train` for training data and `test` for test data, with `test` being the default.
 
@@ -136,7 +136,7 @@ Split is only used for data analysis.
 
 - `--add_explanation`: Includes explanations along with in-context learning examples to give additional context that may aid the model in generating more accurate responses.
 
-To use the `--add_paraphrased_definition` or `--add_adversarial_definition` options, you should need Step 4 to be completed. The definitions will be generated using GPT-3.5-Turbo and only the first time. They will be added to `metadata/` directory to future use.
+To use the `--add_paraphrased_definition` or `--add_adversarial_definition` options, you should need Step 4 of Setup to be completed. The definitions will be generated using GPT-3.5-Turbo and only the first time. They will be added to `metadata/` directory to future use.
 
 Note, only one of the `--add_definition`, `--add_paraphrased_definition`, and `--add_adversarial_definition` options can be used at a time.
 
@@ -150,7 +150,8 @@ Note, only one of the `--add_definition`, `--add_paraphrased_definition`, and `-
 
 #### Filtering and Selection Options
 
-Use these options to filter and execute a task only on a small subset of entities from each aspect during the evaluation and analysis processes. The filter has to be assigned in `const.py`. You can leave these empty to run on the entire dataset.
+Use these options to filter and evaluate a model on a small subset of entities from each aspect during the evaluation and analysis processes. The filter has to be assigned in `const.py`. You can leave these empty to run on the entire dataset.
+We didn't use these options when evaluating the model using our dataset in the main paper (we only created visualizations on this basis).
 
 - `--filter_domains`: Applies a domain-specific filter during result aggregation, using predefined lists. This allows focusing the analysis on specific areas of interest.
 
@@ -164,7 +165,9 @@ Use these options to filter and execute a task only on a small subset of entitie
 
 - `--force_recompute`: Forces the re-computation of metrics, even if they have been previously calculated. This is useful when changes to the evaluation protocol or model configurations need to be reflected in new results.
 
-- `--checkpoint PATH`: Points to a checkpoint directory for resuming an evaluation from a previously saved state. If set to `none`, the evaluation starts from scratch.
+#### Evaluating a Local Checkpoint -
+
+- `--checkpoint PATH`: Points to a checkpoint directory for evaluating an LM from a previously saved state. The state should be saved using `save_pretrained()` method of HuggingFace and it should be in cache directory. If set to `none`, the evaluation starts from the model checkpoint available on HuggingFace cloud.
 
 These options provide extensive control over how models are evaluated and analyzed, allowing users to tailor the process to their specific needs.
  

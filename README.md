@@ -13,6 +13,12 @@ STEP 2: [REQUIRED] Install the required packages using the following command -
 ```commandline
 pip install -r requirements.txt
 ```
+
+Flash-attention-2 has to be installed separately using -
+```commandline
+pip install flash-attn --no-build-isolation
+```
+
 STEP 3: [REQUIRED] Add your HuggingFace API key to the environment variables (or bashrc/zshrc) as `HF_API_KEY` to download the models from the HuggingFace model hub.
 
 ```

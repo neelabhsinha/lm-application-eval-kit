@@ -1,9 +1,20 @@
-# Evaluating Open Language Models Across Task Types, Application Domains, and Reasoning Types: An In-Depth Experimental Analysis
+# Are Small Language Models Ready to Compete with Large Language Models for Practical Applications?
 
----
-**Abstract** - The rapid rise of Language Models (LMs) has expanded their use in several applications. Yet, due to constraints of model size, associated cost or proprietary restrictions, utilizing state-of-the-art (SOTA) LLMs is not always feasible. With open, smaller LMs emerging, more applications can leverage their capabilities, but selecting the right LM can be challenging. This work conducts an in-depth experimental analysis of the semantic correctness of outputs of 10 smaller, open LMs across three aspects: *task types*, *application domains* and *reasoning types*, using diverse prompt styles. We demonstrate that most effective models and prompt styles vary depending on the specific requirements. Our analysis provides a comparative assessment of LMs and prompt styles using a proposed three-tier schema of aspects for their strategic selection based on use-case and other constraints. We also show that if utilized appropriately, these LMs can compete with, and sometimes outperform, SOTA LLMs like DeepSeek-v2, GPT-3.5-Turbo, and GPT-4o.
+![Type](https://img.shields.io/badge/arXiv-2406.11402-yellow)
+![Concepts](https://img.shields.io/badge/Concepts-Deep_Learning,_Computer_Vision-blue)
+![Language](https://img.shields.io/badge/Language-Python-red)
+![Libraries](https://img.shields.io/badge/Libraries-PyTorch,_HuggingFace-green)
 
----
+
+## Overview
+
+Original Implementation of the paper Are Small Language Models Ready to Compete with Large Language Models for Practical Applications?, accepted at Accepted at The Fifth Workshop on Trustworthy Natural Language Processing (TrustNLP 2025) in Annual Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics (NAACL), 2025.
+
+arXiv Link: [2406.11402](https://arxiv.org/abs/2406.11402)
+
+ACL Anthology Link: TBA
+
+
 ## Setup
 
 STEP 1: [REQUIRED] Clone the repository.

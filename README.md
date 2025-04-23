@@ -1,7 +1,7 @@
 # Are Small Language Models Ready to Compete with Large Language Models for Practical Applications?
 
 ![Type](https://img.shields.io/badge/arXiv-2406.11402-yellow)
-![Concepts](https://img.shields.io/badge/Concepts-Deep_Learning,_Computer_Vision-blue)
+![Concepts](https://img.shields.io/badge/Concepts-Deep_Learning,_Natural_Language_Processing-blue)
 ![Language](https://img.shields.io/badge/Language-Python-red)
 ![Libraries](https://img.shields.io/badge/Libraries-PyTorch,_HuggingFace-green)
 

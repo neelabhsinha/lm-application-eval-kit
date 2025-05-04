@@ -224,28 +224,37 @@ The `src` directory contains the following subdirectories:
 - `utils/radar_chart_generator.py` - Generates radar charts for the results.
 - `utils/results_io_util.py` - Some read/write utilities for results.
 
-## Our Results
-
-Overall Performance of LMs on different metrics are given below -
-
-| Model            | BLEU  | ROUGE-1    | ROUGE-2   | ROUGE-L    | METEOR    | BERT Score Precision | BERT Score Recall | BERT Score F1 | Best Instruction                |
-|------------------|-------|------------|-----------|------------|-----------|----------------------|-------------------|---------------|---------------------------------|
-| Gemma-2B         | 6.382 | 22.036     | 7.883     | 21.235     | 18.120    | 78.218               | 86.410            | 81.881        | 4 examples with definition      |
-| Mistral-7B       | 0.290 | 1.174      | 0.542     | 1.085      | 1.993     | 49.248               | 58.408            | 53.395        | 8 examples with definition      |
-| Gemma-7B         | 4.422 | 18.175     | 5.887     | 17.493     | 16.137    | 71.858               | 81.055            | 75.942        | 0 examples with definition      |
-| Llama-3-8B       | 3.706 | 16.379     | 5.348     | 15.302     | 14.957    | 75.520               | 82.727            | 78.804        | 0 examples with definition      |
-| Falcon-2-11B     | 4.285 | 16.885     | 6.461     | 16.013     | 16.450    | 79.652               | 86.184            | 82.718        | 8 examples with definition      |
-| Gemma-2B-I       | 5.756 | 27.564     | 8.084     | 26.236     | 20.620    | 84.555               | 88.058            | 86.189        | 2 examples with definition      |
-| Phi-3-mini-128k-I| 1.279 | 7.169      | 3.173     | 6.265      | 8.046     | 55.470               | 60.282            | 57.720        | 0 examples without definition   |
-| Mistral-7B-I     | 14.069| 51.957     | 14.665    | 50.119     | 35.551    | 91.289               | 93.755            | 92.394        | 8 examples with definition      |
-| Gemma-7B-I       | 0.972 | 8.642      | 3.229     | 7.964      | 12.568    | 78.184               | 85.142            | 81.483        | 0 examples with definition      |
-| Llama-3-8B-I     | 0.953 | 4.682      | 2.191     | 4.233      | 8.312     | 74.231               | 84.332            | 78.888        | 8 examples without definition   |
-
-**NOTE - You can refer all visualizations and tables of the paper in the `paper_results` directory.**
-
 ## Citation
 
-If you use this codebase or our analysis in your research, please cite our paper.
+```
+@inproceedings{sinha-etal-2025-small,
+    title = "Are Small Language Models Ready to Compete with Large Language Models for Practical Applications?",
+    author = "Sinha, Neelabh  and
+      Jain, Vinija  and
+      Chadha, Aman",
+    editor = "Cao, Trista  and
+      Das, Anubrata  and
+      Kumarage, Tharindu  and
+      Wan, Yixin  and
+      Krishna, Satyapriya  and
+      Mehrabi, Ninareh  and
+      Dhamala, Jwala  and
+      Ramakrishna, Anil  and
+      Galystan, Aram  and
+      Kumar, Anoop  and
+      Gupta, Rahul  and
+      Chang, Kai-Wei",
+    booktitle = "Proceedings of the 5th Workshop on Trustworthy NLP (TrustNLP 2025)",
+    month = may,
+    year = "2025",
+    address = "Albuquerque, New Mexico",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.trustnlp-main.25/",
+    pages = "365--398",
+    ISBN = "979-8-89176-233-6",
+    abstract = "The rapid rise of Language Models (LMs) has expanded their use in several applications. Yet, due to constraints of model size, associated cost, or proprietary restrictions, utilizing state-of-the-art (SOTA) LLMs is not always feasible. With open, smaller LMs emerging, more applications can leverage their capabilities, but selecting the right LM can be challenging as smaller LMs don`t perform well universally. This work tries to bridge this gap by proposing a framework to experimentally evaluate small, open LMs in practical settings through measuring semantic correctness of outputs across three practical aspects: task types, application domains and reasoning types, using diverse prompt styles. It also conducts an in-depth comparison of 10 small, open LMs to identify best LM and prompt style depending on specific application requirement using the proposed framework. We also show that if selected appropriately, they can outperform SOTA LLMs like DeepSeek-v2, GPT-4o-mini, Gemini-1.5-Pro, and even compete with GPT-4o."
+}
+```
 
 
 

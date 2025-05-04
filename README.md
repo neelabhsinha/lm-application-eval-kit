@@ -12,7 +12,7 @@ Original Implementation of the paper Are Small Language Models Ready to Compete 
 
 arXiv Link: [2406.11402](https://arxiv.org/abs/2406.11402)
 
-ACL Anthology Link: TBA
+ACL Anthology Link: [2025.trustnlp-main.25](https://aclanthology.org/2025.trustnlp-main.25/)
 
 
 ## Setup
@@ -226,7 +226,7 @@ The `src` directory contains the following subdirectories:
 
 ## Citation
 
-```
+```bibtex
 @inproceedings{sinha-etal-2025-small,
     title = "Are Small Language Models Ready to Compete with Large Language Models for Practical Applications?",
     author = "Sinha, Neelabh  and
